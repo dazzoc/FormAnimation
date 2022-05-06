@@ -12,6 +12,7 @@ containers.forEach(container => {
     const input = container.querySelector('.input');
     const line = container.querySelector('.elastic-line');
     const placeholder = container.querySelector('.placeholder');
+    
     input.addEventListener('focus', () => {
         if(!input.value) {
             tl.fromTo(line, 
@@ -19,6 +20,23 @@ containers.forEach(container => {
                 { attr: { d: end }, ease: "Power2.easeOut", duration: 0.75 }
             );
             tl.to(line, { attr: { d: start }, ease: 'elastic.out(3, 0.5)'}, '<50%');
+            // Placeholder shift
+            tl.to(placeholder, {top: -15, left: 0, scale: 0.7, duration: 0.5, ease: 'Power2.easeOut'}, '<15%')
+        }
+    });
+});
+
+// Revert back if not focused 
+form.addEventListener('click', () => {
+    containers.forEach((container) => {
+        const input = container.querySelector('.input');
+        const line = container.querySelector('.elastic-line');
+        const placeholder = container.querySelector('.placeholder');
+
+        if(document.activeElement !== input){
+            if(!input.value){
+                gsap.to(placeholder, {top: 0, left: 0, scale: 1, duration: 0.5, ease: 'Power2.easeOut'})
+            }
         }
     });
 });
